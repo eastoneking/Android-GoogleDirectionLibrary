@@ -22,7 +22,7 @@ package com.akexorcist.googledirection.constant;
  * Created by Akexorcist on 11/29/15 AD.
  */
 public class DirectionUrl {
-    public static final String MAPS_API_URL = "";
-    public static String DIRECTION_API_URL = "directions/json";
+    public static String MAPS_API_URL = "";
+    public static final String DIRECTION_API_URL = "";
 
 }
