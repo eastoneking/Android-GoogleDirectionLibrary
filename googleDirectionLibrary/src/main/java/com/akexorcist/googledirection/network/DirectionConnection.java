@@ -21,7 +21,12 @@ package com.akexorcist.googledirection.network;
 import com.akexorcist.googledirection.config.GoogleDirectionConfiguration;
 import com.akexorcist.googledirection.constant.DirectionUrl;
 
+import java.io.IOException;
+
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -30,6 +35,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Akexorcist on 11/29/15 AD.
  */
 public class DirectionConnection {
+
+    public static String HTTP_HREADER_REFERER_VALUE="gostreamit";
+
     private static DirectionConnection connection;
 
     public static DirectionConnection getInstance() {
@@ -68,6 +76,20 @@ public class DirectionConnection {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(interceptor);
         }
+
+        builder.addInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Interceptor.Chain chain) throws IOException {
+                Request original = chain.request();
+
+                Request request = original.newBuilder()
+                        .header("Referer", HTTP_HREADER_REFERER_VALUE)
+                        .build();
+                return chain.proceed(request);
+            }
+        });
+
+
         return builder.build();
     }
 }
